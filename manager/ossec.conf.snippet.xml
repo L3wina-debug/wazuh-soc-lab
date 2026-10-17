@@ -1,0 +1,27 @@
+<!--
+  Append this block to the Wazuh MANAGER configuration:
+    /var/ossec/etc/ossec.conf
+
+  It defines a custom command (block-attacker) and wires it to fire as an
+  active response whenever rule 60204 (Multiple Windows Logon Failures) is
+  triggered. location=local runs the response on the agent that generated
+  the alert (the machine under attack).
+
+  After editing, restart the manager:
+    sudo /var/ossec/bin/wazuh-control restart
+-->
+<ossec_config>
+
+  <command>
+    <name>block-attacker</name>
+    <executable>block-attacker.cmd</executable>
+    <timeout_allowed>no</timeout_allowed>
+  </command>
+
+  <active-response>
+    <command>block-attacker</command>
+    <location>local</location>
+    <rules_id>60204</rules_id>
+  </active-response>
+
+</ossec_config>
